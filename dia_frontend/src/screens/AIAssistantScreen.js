@@ -20,7 +20,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { typography, spacing } from '../theme/typography';
 
-const GEMINI_API_KEY = 'AIzaSyCL3llrHnQeRXbyD7VOv85pXh_OA4Gw4gc';
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY || 'YOUR_API_KEY_HERE';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 const AIAssistantScreen = ({ navigation }) => {

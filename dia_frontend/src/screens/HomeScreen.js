@@ -24,7 +24,7 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { getPortfolio, getRecommendedFund } from '../services/api';
 
-const GEMINI_API_KEY = 'AIzaSyCL3llrHnQeRXbyD7VOv85pXh_OA4Gw4gc';
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY || 'YOUR_API_KEY_HERE';
 
 // Base fund data for AI recommendations
 const BASE_FUNDS = {
