@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  cassandra:
+    image: cassandra:4.1
+    container_name: dia_cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=DIA_Cluster
+      - CASSANDRA_DC=dc1
+      - CASSANDRA_ENDPOINT_SNITCH=SimpleSnitch
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe cluster'"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    networks:
+      - dia_network
+
+  backend:
+    build: .
+    container_name: dia_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - CASSANDRA_HOST=cassandra
+      - CASSANDRA_PORT=9042
+      - CASSANDRA_KEYSPACE=dia_keyspace
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    networks:
+      - dia_network
+    restart: unless-stopped
+
+volumes:
+  cassandra_data:
+    driver: local
+
+networks:
+  dia_network:
+    driver: bridge
